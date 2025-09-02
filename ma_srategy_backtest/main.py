@@ -2,7 +2,7 @@ import backtrader as bt
 import pandas as pd
 from strategy_ma_cross import SmaCross
 
-df = pd.read_csv('data/000001.SZ.csv',parase_dates=['trade_date'])
+df = pd.read_csv('data/000001.SZ_daily.csv',parse_dates=['trade_date'])
 df.set_index('trade_date',inplace=True)
 df.rename(columns={'open':'open','high':'high','low':'low','close':'close','vol':'volume'},inplace=True)
 
