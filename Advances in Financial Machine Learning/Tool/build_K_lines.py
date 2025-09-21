@@ -13,8 +13,6 @@ plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
 plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
 
 
-# ... existing code ...
-
 def plot_sz_stock_kline(df, symbol):
     """
     绘制A股股票K线图，并正确设置横纵坐标
@@ -135,15 +133,7 @@ def main():
     
     print(f"数据形状：{df.shape}")
     print(f"数据时间范围：{df.index.min()} 至 {df.index.max()}")
-    print("数据前5行：")
-    print(df.head())
-    
-    # 绘制K线图
-    print("\n正在绘制K线图...")
     plot_sz_stock_kline(df, ts_code)
-    
-    print("\nK线图绘制完成！")
-
 
 if __name__ == "__main__":
     main()
