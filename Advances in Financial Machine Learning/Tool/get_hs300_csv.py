@@ -6,7 +6,7 @@ ts.set_token('4802ae7acc89b1e849a7c9d39078c638213502e945c5c1d886ed877d')
 pro = ts.pro_api()
 
 ts_code = "IF2309.CFX"
-start_date='2023-08-25 09:00:00'
+start_date='2023-08-1 09:00:00'
 end_date='2023-08-25 19:00:00'
 freq = "1min"
 
