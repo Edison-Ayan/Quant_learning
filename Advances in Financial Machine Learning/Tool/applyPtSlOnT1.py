@@ -52,7 +52,9 @@ def applyPtSlOnT1(close, events, ptSl, molecule):
         sl = pd.Series(index=events.index)
     
     # 遍历每个事件，计算最早触发的止盈或止损时间
-    for loc, t1 in events_['t1'].fillna(close.index[-1]).iteritems():
+    # ... existing code ...
+    # 遍历每个事件，计算最早触发的止盈或止损时间
+    for loc, t1 in events_['t1'].fillna(close.index[-1]).items():
         # 获取从当前位置到结束时间的价格路径
         df0 = close[loc:t1]  # 价格路径
         # 计算相对回报率，并根据交易方向调整
@@ -63,6 +65,7 @@ def applyPtSlOnT1(close, events, ptSl, molecule):
         out.loc[loc, 'sl'] = df0[df0 < sl[loc]].index.min()  # 找到第一个低于止损水平的时间
         # 记录最早触发止盈的时间点
         out.loc[loc, 'pt'] = df0[df0 > pt[loc]].index.min()  # 找到第一个高于止盈水平的时间
+# ... existing code ...
     
     # 返回包含止盈止损时间的结果
     return out

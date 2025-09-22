@@ -1,3 +1,4 @@
+
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
@@ -7,12 +8,9 @@ import matplotlib.dates as mdates
 from datetime import datetime
 from CUSUM_filter import getTEvents
 from getDailyVol import getDailyVol
-
 # 设置中文显示
 plt.rcParams['font.sans-serif'] = ['SimHei']  # 用来正常显示中文标签
 plt.rcParams['axes.unicode_minus'] = False  # 用来正常显示负号
-
-
 def plot_sz_stock_kline(df, symbol):
     """
     绘制A股股票K线图，并正确设置横纵坐标
@@ -111,29 +109,3 @@ def plot_sz_stock_kline(df, symbol):
     print(f"K线图已保存至：{image_path}")
     
     plt.show()
-
-def main():
-    # 股票代码
-    ts_code = "000001.SZ"
-    
-    # 数据文件路径
-    csv_path = f'data/{ts_code}_data.csv'
-    
-    # 检查文件是否存在
-    if not os.path.exists(csv_path):
-        print(f"错误：数据文件 {csv_path} 不存在。")
-        return
-    
-    # 读取数据
-    print(f"正在读取数据文件：{csv_path}")
-    df = pd.read_csv(csv_path, parse_dates=['trade_time'], index_col='trade_time')
-    
-    # 按时间排序
-    df = df.sort_index()
-    
-    print(f"数据形状：{df.shape}")
-    print(f"数据时间范围：{df.index.min()} 至 {df.index.max()}")
-    plot_sz_stock_kline(df, ts_code)
-
-if __name__ == "__main__":
-    main()
