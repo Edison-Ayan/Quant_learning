@@ -96,3 +96,4 @@ def TripleBarrierMethod(df):
     print(f"触发止损的事件数量：{sl_triggered}")
     
     print("\n策略应用完成！")
+    return events
