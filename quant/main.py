@@ -1,36 +1,46 @@
-import backtrader as bt
 import pandas as pd
-from Strategy.strategy_ma_cross import SmaCross
-from Tool.read_csv import read_stock_csv
-from Tool.PandasData import PandasData
-from cerebro import cerebro
-# df = pd.read_csv('data/002415.SZ_daily.csv',parse_dates=['trade_date'])
-# df.set_index('trade_date',inplace=True)
-# df.rename(columns={'open':'open','high':'high','low':'low','close':'close','vol':'volume'},inplace=True)
+import matplotlib.pyplot as plt
+import numpy as np
+from Tool.data_loader import DataLoader
+from Tool.feature_selector import FeatureSelector
+from Model.model_trainer import ModelTrainer
+from Tool.visualizer import Visualizer
+from Model.model_evaluator import ModelEvaluator
 
+# 设置中文字体显示
+plt.rcParams['font.sans-serif'] = ['SimHei']
+plt.rcParams['axes.unicode_minus'] = False
 
-df = read_stock_csv('data/000001.SZ_daily.csv')
-data = PandasData(dataname=df)
+def main():
+    # 1. 加载数据
+    data_loader = DataLoader(use_local_data=True)
+    stock_codes = ["600519", "002230", "000333"]
+    indices_codes = ["000001", "399001", "000300"]
+    
+    stock_datas = data_loader.load_stock_data(stock_codes)
+    index_datas = data_loader.load_index_data(indices_codes)
+    
+    Sz_Index = index_datas[1]  # 使用深圳成分指数
+    
+    # 2. 分割训练测试集
+    train, test = data_loader.split_train_test(Sz_Index)
+    
+    # 3. 特征选择
+    feature_selector = FeatureSelector()
+    X_train, y_train, X_test, y_test, features = feature_selector.select_features(train, test, k=43)
+    
+    # 4. 模型训练
+    model_trainer = ModelTrainer()
+    best_model, y_pred, r2, rmse = model_trainer.train_and_optimize(X_train, y_train, X_test, y_test)
+    
+    # 5. 可视化
+    visualizer = Visualizer()
+    visualizer.plot_true_vs_predicted(y_test, y_pred, r2, rmse)
+    visualizer.plot_feature_importance(best_model, X_test, y_test, features)
+    
+    # 6. 模型评估
+    evaluator = ModelEvaluator()
+    evaluator.evaluate_model(y_test, y_pred)
 
-
-
-# 修改夏普比率分析器配置，添加时间周期参数
-cerebro = cerebro(SmaCross,data,1000000,0.001)
-print('初始资金：%.2f'%cerebro.cerebro.broker.getvalue())
-result = cerebro.cerebro.run()
-print('最终资金：%.2f'%cerebro.cerebro.broker.getvalue())
-
-sharpe = result[0].analyzers.sharpe.get_analysis()
-drawdown = result[0].analyzers.drawdown.get_analysis()
-
-# 添加错误处理，防止sharperatio为None
-if 'sharperatio' in sharpe and sharpe['sharperatio'] is not None:
-    print('夏普比率：%.2f'%sharpe['sharperatio'])
-else:
-    print('夏普比率：无法计算（数据不足或无交易）')
-
-# 确保drawdown数据有效
-if 'max' in drawdown and 'drawdown' in drawdown['max']:
-    print('最大回撤：%.2f%%'%drawdown['max']['drawdown'])
-
-cerebro.cerebro.plot(style='candlestick')
+if __name__ == "__main__":
+    main()

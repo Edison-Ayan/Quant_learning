@@ -1,9 +1,9 @@
 import backtrader as bt
 
 class cerebro:
-    def __init__(self,SmaCross,data,cash,commission):
+    def __init__(self,strategy,data,cash,commission):
         self.cerebro = bt.Cerebro()
-        self.cerebro.addstrategy(SmaCross)
+        self.cerebro.addstrategy(strategy)
         self.cerebro.adddata(data)
         self.cerebro.broker.set_cash(cash)
         self.cerebro.broker.setcommission(commission)

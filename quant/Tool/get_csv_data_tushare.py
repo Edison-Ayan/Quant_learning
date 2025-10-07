@@ -33,47 +33,4 @@ df.dropna(inplace=True)
 
 df['log_return'] = np.log(df['close']/df['close'].shift(1))
 df.dropna(inplace=True)
-#log_return被添加到DataFrame
-
-# # 收盘价走势图
-# plt.figure(figsize=(12,5))
-# plt.plot(df.index, df['close'], label='收盘价')
-# plt.title(f"{ts_code} 日线收盘价")
-# plt.xlabel('日期')
-# plt.ylabel('价格')
-# plt.grid(True)
-# plt.legend()
-# plt.tight_layout()
-# plt.show()
-
-# # 对数收益率走势
-# plt.figure(figsize=(12,3))
-# plt.plot(df.index, df['log_return'], label='对数收益率', color='orange')
-# plt.axhline(0, linestyle='--', color='gray')
-# plt.title(f"{ts_code} 日对数收益率")
-# plt.grid(True)
-# plt.tight_layout()
-# plt.show()
-
-#参数设置
-# stock_list = ['000001.SZ','600519.SH','002415.SZ']
-
-# os.makedirs('data',exist_ok=True)
-# for code in stock_list:
-#     df = pro.daily(ts_code=code,start_date=start_date,end_date=end_date)
-#     df['trade_date'] = pd.to_datetime(df['trade_date'])
-#     df = df.sort_values(by='trade_date')
-#     df.set_index('trade_date',inplace=True)
-#     df.to_csv(f'data/{code}_daily.csv')
-#     print(f'数据已保存至data/{code}_daily.csv')
-
-#保存为Parquet格式
-# df.to_parquet('data/000001.SZ_daily.parquet')
-# print("数据概况：")
-# print(df.describe())
-
-# print("\n最大涨幅（对数收益）:", df['log_return'].max())
-# print("最大跌幅（对数收益）:", df['log_return'].min())
-# print("平均日收益:", df['log_return'].mean())
-# print("波动率:", df['log_return'].std())
 
