@@ -3,7 +3,7 @@ import optuna
 from sklearn.linear_model import Ridge
 from sklearn.metrics import mean_squared_error
 import numpy as np
-def objective(trial):
+def objective(trial, X_train_kbest, y_train, X_test_kbest, y_test):
     # 定义不同的参数设置来迭代，这些参数选项怎么设置，Spyder中 Ctrl+I 快速查询 Ridge()函数说明
     params = {
         'alpha': trial.suggest_float('alpha', 0, 5, step=0.05),
