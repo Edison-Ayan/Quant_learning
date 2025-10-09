@@ -38,6 +38,6 @@ def run_backtest(data_feed):
 
 if __name__ == '__main__':
     # 替换为您的数据文件路径
-    data_file = 'data/600519_stock_20230101_20231231.csv'
+    data_file = 'data/600519_stock_20080101_20250630.csv'
     data_feed = load_data(data_file)
-    run_backtest(data_feed)
+    run_backtest(data_feed) 
