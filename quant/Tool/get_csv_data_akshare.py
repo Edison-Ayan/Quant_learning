@@ -4,7 +4,7 @@ import os  # 添加os模块用于目录操作
 import akshare as ak  # 添加akshare库的导入
 
 # 注意：函数名中的'skshare'拼写有误，应为'akshare'
-def get_stock_data_skshare(stockcodes, start_date="20080101", end_date="20250630", save_csv=True, output_dir="./data", use_local_data=False):
+def get_stock_data_skshare(stockcodes, start_date="20080101", end_date="20250630", save_csv=True, output_dir="../data", use_local_data=False):
     """获取A股股票的历史交易数据并可选保存为CSV文件
     
     参数:
@@ -89,7 +89,7 @@ def get_stock_data_skshare(stockcodes, start_date="20080101", end_date="20250630
     return df
 
 # 修改指数数据函数，添加CSV保存功能
-def get_indices_data_akshare(indices_codes, start_date="20000101", end_date="20250630", save_csv=True, output_dir="./data", use_local_data=False):
+def get_indices_data_akshare(indices_codes, start_date="20000101", end_date="20250630", save_csv=True, output_dir="../data", use_local_data=False):
     """获取A股指数的历史交易数据并可选保存为CSV文件
     
     参数:
@@ -178,7 +178,7 @@ def get_indices_data_akshare(indices_codes, start_date="20000101", end_date="202
 # 添加一个测试示例
 if __name__ == "__main__":
     # 测试股票数据获取并保存为CSV
-    stock_data = get_stock_data_skshare(["600519"], start_date="20230101", end_date="20231231", save_csv=True)
+    stock_data = get_stock_data_skshare(["603799"], start_date="20250603", end_date="20251010", save_csv=True)
     
     # 测试指数数据获取并保存为CSV
-    index_data = get_indices_data_akshare(["000001"], start_date="20230101", end_date="20231231", save_csv=True)
+    # index_data = get_indices_data_akshare(["000001"], start_date="20230101", end_date="20231231", save_csv=True)

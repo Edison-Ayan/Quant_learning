@@ -5,10 +5,12 @@ class GridTradingStrategy(bt.Strategy):
     params = dict(
         grid_spacing=0.02,    # 网格间距（百分比）
         grid_levels=10,       # 网格层数
-        initial_cash_ratio=0.5,  # 初始资金用于建仓的比例
-        use_atr=False,        # 是否使用ATR自动调整网格间距
+        initial_cash_ratio=0.2,  # 初始资金用于建仓的比例
+        use_atr=True,         # 启用ATR自动调整网格间距
         atr_period=14,        # ATR计算周期
-        atr_multiplier=2.0    # ATR倍数，用于计算网格间距
+        atr_multiplier=2.0,   # ATR倍数，用于计算网格间距
+        rebalance_days=20,    # 重新计算网格的周期（天）
+        move_threshold=0.3    # 价格偏离基准价格的阈值，超过后移动网格
     )
     
     def __init__(self):
@@ -31,6 +33,8 @@ class GridTradingStrategy(bt.Strategy):
         
         # 记录策略初始化时的价格作为基准价格
         self.base_price = None
+        self.trade_count = 0
+        self.days_since_rebalance = 0
         
     def start(self):
         """
@@ -100,6 +104,15 @@ class GridTradingStrategy(bt.Strategy):
         
         # 检查卖出条件
         self._check_sell_conditions(current_price)
+        # 定期重新计算网格或当价格大幅偏离时移动网格
+        self.days_since_rebalance += 1
+        
+        # 检查是否需要重新平衡网格
+        if (self.days_since_rebalance >= self.p.rebalance_days or 
+            abs(current_price - self.base_price) / self.base_price >= self.p.move_threshold):
+            self.base_price = current_price  # 更新基准价格为当前价格
+            self._initialize_grid()          # 重新初始化网格
+            self.days_since_rebalance = 0    # 重置计数器
     
     def _cancel_open_orders(self):
         """

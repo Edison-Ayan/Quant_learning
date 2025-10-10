@@ -23,10 +23,10 @@ def run_backtest(data_feed):
                         use_atr=False)         # 不使用ATR自动调整网格
     
     # 设置初始资金
-    cerebro.broker.setcash(100000.0)
+    cerebro.broker.setcash(1000000.0)
     
     # 设置佣金
-    cerebro.broker.setcommission(commission=0.001)
+    cerebro.broker.setcommission(commission=0.0001)
     
     # 添加分析器
     cerebro.addanalyzer(bt.analyzers.SharpeRatio, _name='sharpe')
