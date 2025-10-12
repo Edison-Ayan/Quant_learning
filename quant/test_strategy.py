@@ -1,30 +1,22 @@
-import backtrader as bt
 import pandas as pd
 import numpy as np
+import backtrader as bt
 from Tool.PandasData import PandasData
-from Strategy.strategy_grid_trading import GridTradingStrategy
-
+from Strategy.strategy_ma_cross import SmaCross
+from Strategy.strategy_Value_Price_Factor import VolumePriceFactor
 # 加载数据
 def load_data(file_path):
     df = pd.read_csv(file_path, index_col='date', parse_dates=True)
     data_feed = PandasData(dataname=df)
     return data_feed
 
-# 运行回测
+# 测试量化因子
 def run_backtest(data_feed):
     cerebro = bt.Cerebro()
     cerebro.adddata(data_feed)
-    
-    # 添加网格交易策略，可以根据需要调整参数
-    cerebro.addstrategy(GridTradingStrategy,
-                        grid_spacing=0.02,     # 网格间距为2%
-                        grid_levels=10,        # 10层网格
-                        initial_cash_ratio=0.5, # 初始资金50%用于建仓
-                        use_atr=False)         # 不使用ATR自动调整网格
-    
-    # 设置初始资金
+    # 添加因子策略
+    cerebro.addstrategy(VolumePriceFactor)
     cerebro.broker.setcash(1000000.0)
-    
     # 设置佣金
     cerebro.broker.setcommission(commission=0.0001)
     
